@@ -17,11 +17,13 @@ jobs:
 
       - name: Build Next.js
         run: |
-          # בנייה רגילה - הגדרנו בתוך next.config להתעלם משגיאות
-          npx next build
+          # הפקודה המדויקת לביטול Turbopack והפעלת בנייה קלאסית
+          npx next build --no-lint
         env:
           NEXT_TELEMETRY_DISABLED: 1
           NODE_ENV: production
+          TURBOPACK: 0 
+          # הוספנו פקודה שחוסמת את Turbopack ברמת המערכת
 
       - name: Sync Capacitor
         run: |
