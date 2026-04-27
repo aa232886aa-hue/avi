@@ -17,10 +17,14 @@ jobs:
         run: |
           npx cap add android || true
           npx cap copy android || true
-          cd android && ./gradlew assembleDebug || echo "Android folder not found or build failed"
-      - name: Upload APK
+          if [ -d "android" ]; then
+            cd android && ./gradlew assembleDebug
+          else
+            echo "Android folder not found, trying to find any APK"
+          fi
+      - name: Find and Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: warn
+          name: my-app-apk
+          path: "**/*.apk" # זה יחפש כל קובץ APK שנוצר בכל תיקייה שהיא
+          if-no-files-found: error
