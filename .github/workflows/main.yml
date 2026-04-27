@@ -10,16 +10,18 @@ jobs:
         with:
           node-version: 20
 
-      - name: Clean and Prepare
+      - name: Prepare Workspace
         run: |
-          rm -f capacitor.config.ts || true
-          rm -f capacitor.config.json || true
-          npm install
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          mkdir -p www
+          # מעתיק את כל קבצי ה-Web לתוך תיקיית www (מתעלם מתיקיות מערכת)
+          cp -rn . www/ || true 
+          rm -rf www/www || true
+          rm -f capacitor.config.ts capacitor.config.json || true
 
-      - name: Initialize Capacitor
+      - name: Install and Init
         run: |
-          npx cap init "MyBrowser" "com.my.app" --web-dir . 
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npx cap init "MyBrowser" "com.my.app" --web-dir www
 
       - name: Sync Android
         run: |
