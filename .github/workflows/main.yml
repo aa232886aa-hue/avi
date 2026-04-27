@@ -8,24 +8,27 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18 # גרסה יציבה ל-Next.js
+          node-version: 20
 
       - name: Install Dependencies
         run: |
+          npm install -g next typescript
           npm install
+          npm install -D typescript @types/node @types/react @types/next
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Build Next.js Project
+      - name: Build Next.js
         run: |
-          # פקודה שיוצרת את תיקיית ה-out (ה-HTML)
-          npx next build || npm run build
+          # יצירת התיקייה out באופן ידני אם Next.js לא עושה זאת
+          npx next build
         env:
           NEXT_PRIVATE_LOCAL_WEBPACK_STATS: true
 
       - name: Initialize Capacitor
         run: |
-          # יצירת הקונפיגורציה אם היא חסרה
-          npx cap init "MyBrowser" "com.my.app" --web-dir out --confirm
+          # מחיקת קונפיגורציות ישנות כדי למנוע התנגשויות
+          rm -f capacitor.config.ts capacitor.config.json || true
+          npx cap init "MyBrowser" "com.my.app" --web-dir out
 
       - name: Sync Android
         run: |
