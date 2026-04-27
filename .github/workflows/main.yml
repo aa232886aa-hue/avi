@@ -10,17 +10,21 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies
+      - name: Clean and Prepare
         run: |
+          rm -f capacitor.config.ts || true
+          rm -f capacitor.config.json || true
           npm install
-          npm install -D typescript @types/node
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Initialize and Sync Capacitor
+      - name: Initialize Capacitor
         run: |
-          npx cap init "MyBrowser" "com.my.app" --web-dir . || true
+          npx cap init "MyBrowser" "com.my.app" --web-dir . 
+
+      - name: Sync Android
+        run: |
           npx cap add android || true
-          npx cap sync android # הפקודה הזו יוצרת את הקבצים החסרים שגרמו לשגיאה
+          npx cap sync android
 
       - name: Build APK
         run: |
