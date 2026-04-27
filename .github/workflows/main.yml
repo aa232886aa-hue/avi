@@ -10,14 +10,19 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Capacitor
+      - name: Install Dependencies and TypeScript
         run: |
+          npm install
+          npm install -D typescript @types/node
           npm install @capacitor/core @capacitor/cli @capacitor/android
+
+      - name: Initialize Capacitor Config
+        run: |
           npx cap init "MyBrowser" "com.my.app" --web-dir . || true
 
       - name: Create Android Folder
         run: |
-          npx cap add android
+          npx cap add android || true
           npx cap copy android
 
       - name: Build APK
