@@ -17,15 +17,14 @@ jobs:
 
       - name: Build Next.js
         run: |
-          # הפקודה הנקייה לבנייה
-          npx next build
+          # הכרחת בנייה קלאסית ללא Turbopack
+          npx next build --no-lint
         env:
           NEXT_TELEMETRY_DISABLED: 1
           NODE_ENV: production
 
-      - name: Initialize Capacitor
+      - name: Sync Capacitor
         run: |
-          # סנכרון עם התיקייה out שנוצרה
           npx cap add android || true
           npx cap sync android
 
