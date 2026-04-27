@@ -1,0 +1,41 @@
+
+{
+  "entities": {
+    "HostedApp": {
+      "title": "Hosted App",
+      "description": "הגדרות של אפליקציה שמתארחת בתוך המעטפת",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "שם האפליקציה שיופיע בכפתור" },
+        "url": { "type": "string", "description": "כתובת ה-URL של האפליקציה" },
+        "persistState": { "type": "boolean", "description": "האם להשאיר את האפליקציה פועלת ברקע כשעוברים לאחרת" },
+        "order": { "type": "number", "description": "סדר הופעת הכפתור" },
+        "icon": { "type": "string", "description": "שם האייקון מ-Lucide" }
+      },
+      "required": ["title", "url", "persistState", "order"]
+    },
+    "AdminSettings": {
+      "title": "Admin Settings",
+      "description": "הגדרות ניהול כלליות",
+      "type": "object",
+      "properties": {
+        "adminCode": { "type": "string", "description": "קוד הגישה לממשק המנהל" },
+        "kioskMode": { "type": "boolean", "description": "האם להפעיל הגבלות קיוסק (חסימת קליק ימני ובחירת טקסט)" }
+      },
+      "required": ["adminCode"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/apps/{appId}": {
+      "schema": "HostedApp",
+      "description": "אוסף האפליקציות המנוהלות"
+    },
+    "/settings/admin": {
+      "schema": "AdminSettings",
+      "description": "הגדרות מנהל מערכת"
+    }
+  }
+}

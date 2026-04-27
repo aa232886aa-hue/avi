@@ -1,0 +1,22 @@
+{
+  "placeholderImages": [
+    {
+      "id": "tech-hub",
+      "description": "Abstract technology connection background",
+      "imageUrl": "https://picsum.photos/seed/tech/800/450",
+      "imageHint": "technology abstract"
+    },
+    {
+      "id": "workspace",
+      "description": "Clean modern workspace with monitors",
+      "imageUrl": "https://picsum.photos/seed/work/800/450",
+      "imageHint": "modern workspace"
+    },
+    {
+      "id": "network",
+      "description": "Digital network visualization",
+      "imageUrl": "https://picsum.photos/seed/net/800/450",
+      "imageHint": "digital network"
+    }
+  ]
+}
