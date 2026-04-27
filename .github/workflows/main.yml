@@ -10,21 +10,24 @@ jobs:
         with:
           node-version: 20
 
-      - name: Prepare Workspace
+      - name: Locate index.html and Prepare
         run: |
           mkdir -p www
-          # מעתיק את כל קבצי ה-Web לתוך תיקיית www (מתעלם מתיקיות מערכת)
-          cp -rn . www/ || true 
-          rm -rf www/www || true
-          rm -f capacitor.config.ts capacitor.config.json || true
+          # חיפוש הקובץ index.html בכל המאגר והעתקת התיקייה שלו ל-www
+          INDEX_PATH=$(find . -name "index.html" -not -path "./www/*" | head -n 1)
+          if [ -z "$INDEX_PATH" ]; then
+            echo "ERROR: index.html not found anywhere!"
+            ls -R
+            exit 1
+          fi
+          INDEX_DIR=$(dirname "$INDEX_PATH")
+          echo "Found index.html in $INDEX_DIR, copying to www..."
+          cp -r $INDEX_DIR/. www/
 
-      - name: Install and Init
+      - name: Install and Build
         run: |
           npm install @capacitor/core @capacitor/cli @capacitor/android
           npx cap init "MyBrowser" "com.my.app" --web-dir www
-
-      - name: Sync Android
-        run: |
           npx cap add android || true
           npx cap sync android
 
