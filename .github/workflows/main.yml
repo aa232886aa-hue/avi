@@ -10,20 +10,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies and TypeScript
+      - name: Install Dependencies
         run: |
           npm install
           npm install -D typescript @types/node
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Initialize Capacitor Config
+      - name: Initialize and Sync Capacitor
         run: |
           npx cap init "MyBrowser" "com.my.app" --web-dir . || true
-
-      - name: Create Android Folder
-        run: |
           npx cap add android || true
-          npx cap copy android
+          npx cap sync android # הפקודה הזו יוצרת את הקבצים החסרים שגרמו לשגיאה
 
       - name: Build APK
         run: |
