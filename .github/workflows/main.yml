@@ -12,23 +12,24 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          npm install --legacy-peer-deps
           npm install -g next typescript
-          npm install
-          npm install -D typescript @types/node @types/react @types/next
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
       - name: Build Next.js
         run: |
-          # יצירת התיקייה out באופן ידני אם Next.js לא עושה זאת
-          npx next build
+          # ביטול Turbopack כדי למנוע את שגיאת ה-Root
+          npx next build --no-lint
         env:
-          NEXT_PRIVATE_LOCAL_WEBPACK_STATS: true
+          NEXT_TELEMETRY_DISABLED: 1
+          NODE_ENV: production
 
       - name: Initialize Capacitor
         run: |
-          # מחיקת קונפיגורציות ישנות כדי למנוע התנגשויות
           rm -f capacitor.config.ts capacitor.config.json || true
-          npx cap init "MyBrowser" "com.my.app" --web-dir out
+          # Next.js 15 מייצר את הקבצים בתיקיית .next או out
+          # ננסה להשתמש בתיקייה out (וודא שיש לך output: 'export' ב-next.config.ts)
+          npx cap init "MyBrowser" "com.my.app" --web-dir out --confirm
 
       - name: Sync Android
         run: |
